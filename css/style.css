@@ -208,19 +208,23 @@ li {
   border: solid 3px rgba(255, 255, 255, 0.4);
   background-color: rgb(53, 72, 110);
 }
-.main-page .mainPage-container .box-right .box-purchase .purchase-img {
+.main-page .mainPage-container .box-right .box-purchase .purchase-item {
+  display: flex;
+  width: 100%;
+}
+.main-page .mainPage-container .box-right .box-purchase .purchase-item .purchase-img {
   width: 30%;
   height: 30%;
   border: solid 3px rgba(255, 255, 255, 0.4);
   border-right: none;
   margin: 0.8% 0 0.8% 0.8%;
 }
-.main-page .mainPage-container .box-right .box-purchase .purchase-img img {
+.main-page .mainPage-container .box-right .box-purchase .purchase-item .purchase-img img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
-.main-page .mainPage-container .box-right .box-purchase .purchase-info {
+.main-page .mainPage-container .box-right .box-purchase .purchase-item .purchase-info {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -230,24 +234,24 @@ li {
   border: solid 3px rgba(255, 255, 255, 0.4);
   border-left: none;
 }
-.main-page .mainPage-container .box-right .box-purchase .purchase-info .items-info {
+.main-page .mainPage-container .box-right .box-purchase .purchase-item .purchase-info .items-info {
   color: #fff;
   font-weight: 700;
 }
-.main-page .mainPage-container .box-right .box-purchase .purchase-info .items-info .item-name {
+.main-page .mainPage-container .box-right .box-purchase .purchase-item .purchase-info .items-info .item-name {
   font-size: 1.25rem;
   font-weight: 700;
 }
-.main-page .mainPage-container .box-right .box-purchase .item-count {
+.main-page .mainPage-container .box-right .box-purchase .purchase-item .item-count {
   color: #fff;
   text-align: right;
   margin: 0 20px 0 0;
 }
-.main-page .mainPage-container .box-right .box-purchase .item-count .Possession {
+.main-page .mainPage-container .box-right .box-purchase .purchase-item .item-count .Possession {
   font-size: 1.25rem;
   font-weight: 700;
 }
-.main-page .mainPage-container .box-right .box-purchase .item-count .get-money {
+.main-page .mainPage-container .box-right .box-purchase .purchase-item .item-count .get-money {
   color: #28a745;
 }
 .main-page .mainPage-container .box-right .reset-save-button {
