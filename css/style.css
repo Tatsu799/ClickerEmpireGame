@@ -596,7 +596,7 @@ th {
 @media screen and (max-width: 480px) {
   .main-page .mainPage-container .box-left .image-box .image-wrapper {
     position: absolute;
-    top: 24%;
+    top: 27%;
     left: 2.5%;
     width: 95%;
     height: 20%;
@@ -638,8 +638,8 @@ th {
 @media screen and (max-width: 480px) {
   .main-page .mainPage-container .box-right .user-info-box {
     position: absolute;
-    top: 13%;
-    left: 2.5%;
+    top: 15%;
+    left: 3%;
     width: 98%;
   }
 }
@@ -683,10 +683,10 @@ th {
 @media screen and (max-width: 480px) {
   .main-page .mainPage-container .box-right .box-container {
     position: absolute;
-    top: 48%;
+    top: 50.5%;
     left: 2.5%;
     width: 95%;
-    height: 45%;
+    height: 40%;
   }
 }
 .main-page .mainPage-container .box-right .box-container .box-purchase .purchase-item {
@@ -774,6 +774,13 @@ th {
   .main-page .mainPage-container .box-right .reset-save-button .save-button {
     width: 4%;
     height: 4%;
+  }
+}
+@media screen and (max-width: 480px) {
+  .main-page .mainPage-container .box-right .reset-save-button .reset-button,
+  .main-page .mainPage-container .box-right .reset-save-button .save-button {
+    width: 7%;
+    height: 7%;
   }
 }
 .main-page .mainPage-container .box-right .reset-save-button .reset-button img,

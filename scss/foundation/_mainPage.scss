@@ -63,7 +63,7 @@
           }
           @include mq(sp) {
             position: absolute;
-            top: 24%;
+            top: 27%;
             left: 2.5%;
             width: 95%;
             height: 20%;
@@ -94,14 +94,14 @@
     }
     .box-right {
       width: 60%;
-      height: 100%;    
+      height: 100%;
       .user-info-box {
         width: 100%;
         height: auto;
         @include mq(sp) {
           position: absolute;
-          top: 13%;
-          left: 2.5%;
+          top: 15%;
+          left: 3%;
           width: 98%;
         }
         .user-info {
@@ -141,10 +141,10 @@
         }
         @include mq(sp) {
           position: absolute;
-          top: 48%;
+          top: 50.5%;
           left: 2.5%;
           width: 95%;
-          height: 45%;
+          height: 40%;
         }
         .box-purchase {
           .purchase-item {
@@ -225,6 +225,10 @@
           @include mq(pc_max) {
             width: 4%;
             height: 4%;
+          }
+          @include mq(sp) {
+            width: 7%;
+            height: 7%;
           }
           img {
             width: 100%;
