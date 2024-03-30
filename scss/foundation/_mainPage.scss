@@ -1,0 +1,252 @@
+@use "../global" as *;
+
+.main-page {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  @include mq(sp) {
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .mainPage-container {
+    position: absolute;
+    display: flex;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 1300px;
+    width: 100%;
+    height: 80vh;
+    background-color: rgb(33, 41, 51);
+    border: solid 3px rgba(255, 255, 255, 0.7);
+    @include mq(sp) {
+      position: block;
+      width: 100%;
+      height: 100%;
+    }
+    .box-left {
+      width: 40%;
+      height: 100%;
+      .count-burgers {
+        width: 90%;
+        margin: 0 auto;
+        margin-top: 5%;
+        text-align: center;
+        background-color: rgb(53, 72, 110);
+        border: solid 3px rgba(255, 255, 255, 0.4);
+        color: #fff;
+        @include mq(sp) {
+          position: absolute;
+          top: 0;
+          left: 2.5%;
+          width: 95%;
+        }
+        .burgers {
+          font-size: 1.25rem
+        }
+      }
+      .image-box {
+        width: 100%;
+        height: auto;
+        .image-wrapper {
+          width: 90%;
+          height: 61vh;
+          margin: 6.5% auto;
+          border: solid 3px rgba(255, 255, 255, 0.4);
+          background-color: rgb(53, 72, 110);
+          @include mq(pc_max) {
+            height: 67.5vh;;
+          }
+          @include mq(tab) {
+            height: 63.5vh;;
+          }
+          @include mq(sp) {
+            position: absolute;
+            top: 24%;
+            left: 2.5%;
+            width: 95%;
+            height: 20%;
+          }
+          p {
+            position: absolute;
+            top: 25%;
+            left: 5%;
+            display: inline;
+            color: #fff;
+            font-weight: 700;
+            font-size: 2rem;
+            @include mq(pc_max) {
+              top: 35%;
+            }
+            @include mq(sp) {
+              font-size: 1rem;
+              top: 0;
+            }
+          }
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+          }
+        }
+      }
+    }
+    .box-right {
+      width: 60%;
+      height: 100%;    
+      .user-info-box {
+        width: 100%;
+        height: auto;
+        @include mq(sp) {
+          position: absolute;
+          top: 13%;
+          left: 2.5%;
+          width: 98%;
+        }
+        .user-info {
+          display: flex;
+          flex-wrap: wrap;
+          width: 97%;
+          margin: 3.5% auto;
+          margin-right: 5%;
+          border: solid 2px rgba(255, 255, 255, 0.4);
+          background-color: rgb(53, 72, 110);
+          .name,
+          .age,
+          .days,
+          .money {
+            width: 50%;
+            border: solid 1px rgba(255, 255, 255, 0.4);
+            color: #fff;
+            text-align: center;
+            line-height: 2.2;
+            
+          }
+        }
+      
+      }
+      .box-container {
+        width: 97%;
+        height: 77%;
+        margin: 4% 5% 0 0;
+        border: solid 2px rgba(255, 255, 255, 0.4);
+        background-color: rgb(53, 72, 110);
+        overflow: scroll;
+        @include mq(pc_max) {
+          height: 85%;
+        }
+        @include mq(tab) {
+          height: 80%;
+        }
+        @include mq(sp) {
+          position: absolute;
+          top: 48%;
+          left: 2.5%;
+          width: 95%;
+          height: 45%;
+        }
+        .box-purchase {
+          .purchase-item {
+            display: flex;
+            width: 100%;
+            border: solid 2px rgba(255, 255, 255, 0.4);
+            .purchase-img {
+              width: 18%;
+              height: 10%;
+              margin: 0.8% 5% 0.8% 0.8%;
+              padding: 2% 0 2% 2%;
+              img {
+                width: 100%;
+                height: 100%;
+                object-fit: scale-down;
+              }
+            }
+            .purchase-info {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              width: 70%;
+              margin: 0.8% 0.8% 0.8% 0;
+              border-left: none;
+              .items-info {
+                display: inline-block;
+                width: 55%;
+                color: #fff;
+                font-weight: 700;
+                @include mq(sp) {
+                  font-size: 0.9rem;
+                }
+                .item-name {
+                  display: inline-block;
+                  width: 100%;
+                  font-size: 1.25rem;
+                  font-weight: 700;
+                  @include mq(sp) {
+                    font-size: 1rem;
+                  }
+                }
+                .item-price {
+                  display: inline-block;
+                  width: 100%;
+                }
+              }
+            }
+            .item-count {
+              color: #fff;
+              text-align: right;
+              .Possession {
+                font-size: 1.25rem;
+                font-weight: 700;
+              }
+              .get-money {
+                width: 100%;
+                color:#28a745;
+              }
+            }
+          }
+        }
+      }
+
+      .reset-save-button {
+        display: flex;
+        justify-content: end;
+        margin: 0 2.5% 0 0;
+        @include mq(sp) {
+          position: absolute;
+          top: 94%;
+          left: 0;
+        }
+        .reset-button,
+        .save-button {
+          width: 3%;
+          height: 4%;
+          margin: 0 1.5% 0 0;
+          @include mq(pc_max) {
+            width: 4%;
+            height: 4%;
+          }
+          img {
+            width: 100%;
+            height: 100%;
+          }
+        }
+      }
+    }
+  }
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 0;
+  background-color: #fff;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0.7);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #fff;
+  border-radius: 5px;
+}

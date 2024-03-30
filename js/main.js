@@ -96,7 +96,7 @@ class Views {
 
     boxBurger.innerHTML = `
       <p id="burgers" class="burgers">${userData.burgers} Burgers</p>
-      <p class="burger-price">one click ¥${userData.perClickPrice}</p>
+      <p class="burger-price">One click ¥${userData.perClickPrice}</p>
     `;
 
     return boxBurger;
@@ -104,12 +104,14 @@ class Views {
 
   static burgerImage(userData) {
     const container = document.createElement('div');
-    container.classList.add('image');
-    container.setAttribute('id', 'burger-count');
+    container.classList.add('image-box');
 
     container.innerHTML = `
+    <div id="burger-count" class="image-wrapper">
+    <p>Click me!!!!</p>
       <img id="burgers-image" src="./image/burger-img.png" alt="" />
-    `;
+    </div>  
+  `;
 
     let clickBurger = container.querySelector('#burgers-image');
     clickBurger.addEventListener('click', function () {
@@ -217,11 +219,13 @@ class Views {
 
     const purchaseButton = container.querySelector('#purchase');
     purchaseButton.addEventListener('click', function () {
-      // const inputNum = config.mainPage.querySelector('#inputNum');
       if (inputNum.value < 1) {
         alert('put number');
       } else {
         Controller.purchaseItem(userData, inputNum.value);
+        purchaseItems.innerHTML = '';
+        userData.totalItemPrice = 0;
+        purchaseItems.append(Views.boxPurchasePage(userData));
       }
     });
 
@@ -247,7 +251,7 @@ class Views {
     saveButton.addEventListener('click', function () {
       let jsonEncoded = JSON.stringify(userData);
       localStorage.setItem(userData.name, jsonEncoded);
-      alert('Save your data');
+      alert('Save your data!! \n Please put your name when your login again.');
 
       config.mainPage.innerHTML = '';
       config.initialPage.innerHTML = '';
@@ -399,21 +403,20 @@ class Controller {
   //アイテムの購入の処理
   static purchaseItem(userData, inputNum) {
     let index = config.mainPage.querySelector('#box-purchase-info').getAttribute('index');
+    const userItem = userData.items[index];
 
-    if (
-      userData.items[index].maxQuantity > userData.items[index].itemPurchaseCount &&
-      inputNum <= userData.items[index].maxQuantity - userData.items[index].itemPurchaseCount
-    ) {
-      userData.items[index].itemPurchaseCount += Number(inputNum);
-      if (userData.items[index].type === 'click') {
+    if (userData.money >= userItem.price * inputNum && inputNum <= userItem.maxQuantity - userItem.itemPurchaseCount) {
+      if (userItem.type === 'click') {
+        userItem.itemPurchaseCount += Number(inputNum);
         Controller.updateBurgerPrice(userData, index, inputNum);
         Views.updateBurgersPage(userData);
       } else {
+        userItem.itemPurchaseCount += Number(inputNum);
         Controller.updateItemsPrice(userData, index, inputNum);
         Views.updateUserInfoPage(userData);
       }
-    } else if (userData.money >= userData.items[index].price * inputNum && userData.items[index].type === 'stock') {
-      userData.items[index].itemPurchaseCount += Number(inputNum);
+    } else if (userData.money >= userItem.price * inputNum && userItem.type === 'stock') {
+      userItem.itemPurchaseCount += Number(inputNum);
       Controller.updateStocksPrice(userData, index, inputNum);
       Views.updateUserInfoPage(userData);
     } else {
@@ -425,10 +428,10 @@ class Controller {
   static updateBurgerPrice(userData, index, inputNum) {
     const price = Number(userData.items[index].price) * inputNum;
     if (userData.money < price) {
-      alert('You have enough money to buy');
+      alert('You have not enough money to buy');
     } else {
       userData.money -= price;
-      userData.perClickPrice += userData.items[index].perClick;
+      userData.perClickPrice += userData.items[index].perClick * inputNum;
       Views.updateUserInfoPage(userData);
     }
   }
@@ -438,7 +441,7 @@ class Controller {
     const price = Number(userData.items[index].price) * inputNum;
 
     if (userData.money < price) {
-      alert('You have enough money to buy');
+      alert('You have not enough money to buy');
     } else if (userData.items[index].name === 'ETF Stock') {
       userData.money -= price;
       userData.items[index].price += userData.items[index].price * 0.1;
@@ -456,7 +459,7 @@ class Controller {
     const price = Number(userData.items[index].price) * inputNum;
 
     if (userData.money < price) {
-      alert('You have enough money to buy');
+      alert('You have not enough money to buy');
     } else {
       userData.money -= price;
       userData.perSecPrice += userData.items[index].perSec;
@@ -464,7 +467,6 @@ class Controller {
     }
   }
 
-  //アイテムの合計金額を表示
   static totalItemPrice(userData, index, inputNum) {
     let totalItemPrice = config.mainPage.querySelector('#totalPrice');
 
