@@ -3,7 +3,6 @@
 const config = {
   initialPage: document.getElementById('initialPage'),
   mainPage: document.getElementById('mainPage'),
-  itemPage: document.getElementById('box-purchase'),
 };
 
 function displayNone(ele) {
@@ -17,13 +16,17 @@ function displayBlock(ele) {
 }
 
 class Item {
-  constructor(name, maxQuantity, price, imgUrl, unitPrice) {
+  constructor(name, type, maxQuantity, price, imgUrl, unitPrice, perClick, perSec, itemPurchaseCount, totalPrice) {
     this.name = name;
+    this.type = type;
     this.maxQuantity = maxQuantity;
     this.price = price;
     this.imgUrl = imgUrl;
     this.unitPrice = unitPrice;
-    this.itemCount = 0;
+    this.perClick = perClick;
+    this.perSec = perSec;
+    this.itemPurchaseCount = itemPurchaseCount;
+    this.totalPrice = 0;
   }
 }
 
@@ -36,13 +39,8 @@ class UserData {
     this.burgers = burgers;
     this.items = items;
     this.perClickPrice = 25;
-  }
-
-  countDays() {
-    this.days++;
-    if (this.days % 365 === 0) {
-      this.age++;
-    }
+    this.perSecPrice = 0;
+    this.totalItemPrice = 0;
   }
 }
 
@@ -53,7 +51,7 @@ class Views {
 
     container.innerHTML = `
     <h2 class="initial-title">Clicker Empire Game</h2>
-    <input id="yourName" class="your-name" name="yourName" type="text" placeholder="Your name" value="aaa"/>
+    <input id="yourName" class="your-name" name="yourName" type="text" placeholder="Your name"/>
     <div class="buttons">
       <button class="new-button" id="new-button">New</button>
       <button class="login-button" id="login-button">Login</button>
@@ -61,8 +59,6 @@ class Views {
     `;
 
     config.initialPage.append(container);
-
-    Control.startGame();
   }
 
   static mainPage(userData) {
@@ -117,7 +113,7 @@ class Views {
 
     let clickBurger = container.querySelector('#burgers-image');
     clickBurger.addEventListener('click', function () {
-      Control.CountClickBurger(userData);
+      Controller.CountClickBurger(userData);
     });
 
     return container;
@@ -129,8 +125,8 @@ class Views {
 
     boxRight.innerHTML = `
       <p class="name">${userData.name}</p>
-      <p id="age" class="age">${userData.age}</p>
-      <p id="days" class="days">${userData.days.toString()}</p>
+      <p id="age" class="age">${userData.age} years old</p>
+      <p id="days" class="days">${userData.days.toString()} days</p>
       <p id="money" class="money">¥${userData.money}</p>
     `;
 
@@ -154,7 +150,7 @@ class Views {
             <p class="item-price">¥${userData.items[i].price}</p>
           </div>
           <div class="item-count">
-            <p class="Possession">0</p>
+            <p class="Possession">${userData.items[i].itemPurchaseCount}</p>
             <p class="get-money">${userData.items[i].unitPrice}</p>
           </div>
         </div>
@@ -164,7 +160,6 @@ class Views {
 
     const purchaseItems = container.querySelectorAll('#purchase-item');
     const itemsBox = config.mainPage.querySelector('#purchaseItems');
-    // console.log(itemsBox);
 
     for (let i = 0; i < purchaseItems.length; i++) {
       purchaseItems[i].addEventListener('click', function () {
@@ -180,6 +175,7 @@ class Views {
     const container = document.createElement('div');
     container.classList.add('box-purchase-info');
     container.setAttribute('id', 'box-purchase-info');
+    container.setAttribute('index', index);
 
     container.innerHTML = `
       <div class="box-purchase-info-wrapper">
@@ -197,21 +193,36 @@ class Views {
       </div>
       <div class="select-quantity" id="select-quantity">
         <p class="text">How many would you like to buy?</p>
-        <input class="input-quantity" type="number" placeholder="1" />
-        <p class="total-price">total: $0</p>
+        <input id="inputNum" class="input-quantity" type="number" placeholder="1"/>
+        <p id="totalPrice" class="total-price">total: ¥${userData.totalItemPrice}</p>
       </div>
       <div class="back-next-buttons">
         <button id="go-back" class="go-back">Go Back</button>
-        <button class="next">Purchase</button>
+        <button id="purchase" class="purchase">Purchase</button>
       </div>
     `;
 
     const purchaseItems = config.mainPage.querySelector('#purchaseItems');
     const goBackButton = container.querySelector('#go-back');
+    const inputNum = container.querySelector('#inputNum');
+
+    inputNum.addEventListener('change', function () {
+      Controller.totalItemPrice(userData, index, inputNum);
+    });
 
     goBackButton.addEventListener('click', function () {
       purchaseItems.innerHTML = '';
       purchaseItems.append(Views.boxPurchasePage(userData));
+    });
+
+    const purchaseButton = container.querySelector('#purchase');
+    purchaseButton.addEventListener('click', function () {
+      // const inputNum = config.mainPage.querySelector('#inputNum');
+      if (inputNum.value < 1) {
+        alert('put number');
+      } else {
+        Controller.purchaseItem(userData, inputNum.value);
+      }
     });
 
     return container;
@@ -222,13 +233,32 @@ class Views {
     resetSaveButton.classList.add('reset-save-button');
 
     resetSaveButton.innerHTML = `
-      <div class="reset-button">
+      <div id="reset" class="reset-button">
         <img src="./image/reset-icon.png" alt="" />
       </div>
-      <div class="save-button">
+      <div id="save" class="save-button">
         <img src="./image/save-icon.png" alt="" />
       </div>
     `;
+
+    const resetButton = resetSaveButton.querySelector('#reset');
+    const saveButton = resetSaveButton.querySelector('#save');
+
+    saveButton.addEventListener('click', function () {
+      let jsonEncoded = JSON.stringify(userData);
+      localStorage.setItem(userData.name, jsonEncoded);
+      alert('Save your data');
+
+      config.mainPage.innerHTML = '';
+      config.initialPage.innerHTML = '';
+      displayBlock(config.initialPage);
+      Controller.stopTimer();
+      Controller.startGame();
+    });
+
+    resetButton.addEventListener('click', function () {
+      Controller.resetUserData(userData);
+    });
 
     return resetSaveButton;
   }
@@ -247,39 +277,66 @@ class Views {
   }
 }
 
-class Control {
+class Controller {
+  setTimer;
+
   //MainPageへ遷移。
   static startGame() {
+    Views.startGamePage();
     displayNone(config.mainPage);
 
-    //NEWボタン
-    let newButton = document.getElementById('new-button');
+    const newButton = document.getElementById('new-button');
+    const loginButton = document.getElementById('login-button');
+
     newButton.addEventListener('click', function () {
-      let userData = new UserData(container.querySelector('input[name="yourName"]').value, 20, 0, 50000, 0);
+      let userData = Controller.initialUserData();
       if (userData.name === '') {
         alert('Please put your name');
       } else {
         displayBlock(config.mainPage);
         displayNone(config.initialPage);
-        Views.mainPage(Control.initialUserData());
-        // Control.timeInterval(userData);
+        Views.mainPage(userData);
+        Controller.timeInterval(userData);
+      }
+    });
+
+    loginButton.addEventListener('click', function () {
+      const userName = config.initialPage.querySelector('#yourName').value;
+      if (localStorage.getItem(userName) === null) {
+        alert('No user data');
+      } else {
+        let userInfo = JSON.parse(localStorage.getItem(userName));
+        displayBlock(config.mainPage);
+        displayNone(config.initialPage);
+        Views.mainPage(userInfo);
+        Controller.timeInterval(userInfo);
       }
     });
   }
 
   static initialUserData() {
     const Items = [
-      new Item('Flip machine', 500, '15,000', './image/flip-machine-img.png', '¥25/click'),
-      new Item('ETF Stock', '∞', '300,000', './image/stoks-img.png', '¥0.1/sec'),
-      new Item('ETF Bonds', '∞', '300,000', './image/stoks-img.png', '¥0.7/sec'),
-      new Item('Lemonade Stand', 1000, '30,000', './image/lemonade-img.png', '¥30/sec'),
-      new Item('Ice Cream Truck', 500, '100,000', './image/ice-cream-img.png', '¥120/sec'),
-      new Item('House', 100, '20,000,000', './image/house-img.png', '¥32000/sec'),
-      new Item('TownHouse', 100, '40,000,000', './image/town-house.png', '¥64000/sec'),
-      new Item('Mansion', 20, '250,000,000', './image/mansion-img.png', '¥50000/sec'),
-      new Item('Industrial Space', 10, '1,000,000,000', './image/industrial-space-img.png', '¥2200000/sec'),
-      new Item('Hotel Skyscraper', 5, '10,000,000,000', './image/hotel-skyscraper-img.png', '¥25000000/sec'),
-      new Item('Bullet-Speed Sky Railway', 1, '10,000,000,000,000', './image/bullet-speed-sky -railway-img.png', '¥30000000000/sec'),
+      new Item('Flip machine', 'click', 500, 15000, './image/flip-machine-img.png', '¥25/click', 25, 0, 0),
+      new Item('ETF Stock', 'stock', '∞', 300000, './image/stoks-img.png', '¥0.1/sec', 0, 0.1, 0),
+      new Item('ETF Bonds', 'stock', '∞', 300000, './image/stoks-img.png', '¥0.7/sec', 0, 0.07, 0),
+      new Item('Lemonade Stand', 'other', 1000, 30000, './image/lemonade-img.png', '¥30/sec', 0, 30, 0),
+      new Item('Ice Cream Truck', 'other', 500, 100000, './image/ice-cream-img.png', '¥120/sec', 0, 120, 0),
+      new Item('House', 'other', 100, 20000000, './image/house-img.png', '¥32000/sec', 0, 32000, 0),
+      new Item('TownHouse', 'other', 100, 40000000, './image/town-house.png', '¥64000/sec', 0, 64000, 0),
+      new Item('Mansion', 'other', 20, 250000000, './image/mansion-img.png', '¥50000/sec', 0, 50000, 0),
+      new Item('Industrial Space', 'other', 10, 1000000000, './image/industrial-space-img.png', '¥2200000/sec', 0, 2200000, 0),
+      new Item('Hotel Skyscraper', 'other', 5, 10000000000, './image/hotel-skyscraper-img.png', '¥25000000/sec', 0, 25000000, 0),
+      new Item(
+        'Bullet-Speed Sky Railway',
+        'other',
+        1,
+        10000000000000,
+        './image/bullet-speed-sky -railway-img.png',
+        '¥30000000000/sec',
+        0,
+        30000000000,
+        0
+      ),
     ];
 
     let userData = new UserData(config.initialPage.querySelector('input[name="yourName"]').value, 20, 0, 50000, 0, Items);
@@ -288,29 +345,136 @@ class Control {
   }
 
   static timeInterval(userData) {
-    setInterval(function () {
-      userData.countDays();
+    Controller.setTimer = setInterval(function () {
+      Controller.countDays(userData);
 
-      Control.rewriteUserData(userData);
+      if (userData.perSecPrice > 0) {
+        userData.money += userData.perSecPrice;
+      }
+
+      Controller.rewriteUserData(userData);
     }, 1000);
   }
 
-  //ユーザーのデータを更新する。
+  static stopTimer() {
+    clearInterval(Controller.setTimer);
+  }
+
+  static countDays(userData) {
+    userData.days++;
+    if (userData.days % 365 === 0) {
+      userData.age++;
+    }
+  }
+
+  //ユーザーデータの更新
   static rewriteUserData(userData) {
     let age = config.mainPage.querySelector('#age');
     let days = config.mainPage.querySelector('#days');
+    let money = config.mainPage.querySelector('#money');
 
-    age.innerHTML = `${userData.age}`;
-    days.innerHTML = `${userData.days}`;
+    age.innerHTML = `${userData.age} years old`;
+    days.innerHTML = `${userData.days} days`;
+    money.innerHTML = `¥${userData.money}`;
   }
 
-  //バーガーのクリックデータを更新する
+  //Burgerのクリックデータを更新
   static CountClickBurger(userData) {
     userData.burgers++;
     userData.money += userData.perClickPrice;
     Views.updateBurgersPage(userData);
     Views.updateUserInfoPage(userData);
   }
-}
 
-Views.startGamePage();
+  //ユーザーデータのリセット
+  static resetUserData(userData) {
+    window.confirm('Reset All Data?');
+    let newUser = Controller.initialUserData(userData.name);
+    config.mainPage.innerHTML = '';
+    Controller.stopTimer();
+    Views.mainPage(newUser);
+    Controller.timeInterval(newUser);
+  }
+
+  //アイテムの購入の処理
+  static purchaseItem(userData, inputNum) {
+    let index = config.mainPage.querySelector('#box-purchase-info').getAttribute('index');
+
+    if (
+      userData.items[index].maxQuantity > userData.items[index].itemPurchaseCount &&
+      inputNum <= userData.items[index].maxQuantity - userData.items[index].itemPurchaseCount
+    ) {
+      userData.items[index].itemPurchaseCount += Number(inputNum);
+      if (userData.items[index].type === 'click') {
+        Controller.updateBurgerPrice(userData, index, inputNum);
+        Views.updateBurgersPage(userData);
+      } else {
+        Controller.updateItemsPrice(userData, index, inputNum);
+        Views.updateUserInfoPage(userData);
+      }
+    } else if (userData.money >= userData.items[index].price * inputNum && userData.items[index].type === 'stock') {
+      userData.items[index].itemPurchaseCount += Number(inputNum);
+      Controller.updateStocksPrice(userData, index, inputNum);
+      Views.updateUserInfoPage(userData);
+    } else {
+      alert('You can not buy item anymore');
+    }
+  }
+
+  //Burgerの情報のアップデート処理
+  static updateBurgerPrice(userData, index, inputNum) {
+    const price = Number(userData.items[index].price) * inputNum;
+    if (userData.money < price) {
+      alert('You have enough money to buy');
+    } else {
+      userData.money -= price;
+      userData.perClickPrice += userData.items[index].perClick;
+      Views.updateUserInfoPage(userData);
+    }
+  }
+
+  //Stockの情報のアップデート処理
+  static updateStocksPrice(userData, index, inputNum) {
+    const price = Number(userData.items[index].price) * inputNum;
+
+    if (userData.money < price) {
+      alert('You have enough money to buy');
+    } else if (userData.items[index].name === 'ETF Stock') {
+      userData.money -= price;
+      userData.items[index].price += userData.items[index].price * 0.1;
+      userData.perSecPrice += Math.floor(Number(userData.items[index].price) * userData.items[index].perSec * inputNum);
+      Views.updateUserInfoPage(userData);
+    } else if (userData.items[index].name === 'ETF Bonds') {
+      userData.money -= price;
+      userData.perSecPrice += Math.floor(Number(userData.items[index].price) * userData.items[index].perSec * inputNum);
+      Views.updateUserInfoPage(userData);
+    }
+  }
+
+  //その他のアイテムの情報のアップデート処理
+  static updateItemsPrice(userData, index, inputNum) {
+    const price = Number(userData.items[index].price) * inputNum;
+
+    if (userData.money < price) {
+      alert('You have enough money to buy');
+    } else {
+      userData.money -= price;
+      userData.perSecPrice += userData.items[index].perSec;
+      Views.updateUserInfoPage(userData);
+    }
+  }
+
+  //アイテムの合計金額を表示
+  static totalItemPrice(userData, index, inputNum) {
+    let totalItemPrice = config.mainPage.querySelector('#totalPrice');
+
+    if (inputNum.value > 0) {
+      userData.totalItemPrice = userData.items[index].price * inputNum.value;
+      totalItemPrice.innerHTML = `total: ¥${userData.totalItemPrice}`;
+    } else {
+      userData.totalItemPrice = userData.totalItemPrice;
+      totalItemPrice.innerHTML = `total: ¥0`;
+    }
+  }
+}
+Controller.startGame();

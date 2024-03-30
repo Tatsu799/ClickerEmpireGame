@@ -51,7 +51,7 @@ li {
   justify-content: space-between;
   margin: 0 10% 0 10%;
 }
-.back-next-buttons .next,
+.back-next-buttons .purchase,
 .back-next-buttons .go-back {
   width: 48%;
   margin: 3% 0 5% 0;
@@ -73,12 +73,12 @@ li {
   border: solid 1px #0069d9;
   transition: all 0.3s ease;
 }
-.back-next-buttons .next {
+.back-next-buttons .purchase {
   background-color: #0069d9;
   color: #fff;
   transition: all 0.3s ease;
 }
-.back-next-buttons .next:hover {
+.back-next-buttons .purchase:hover {
   background-color: #fff;
   color: #0069d9;
   transition: all 0.3s ease;
@@ -182,7 +182,7 @@ li {
 }
 .main-page .mainPage-container .box-right {
   width: 60%;
-  height: auto;
+  height: 100%;
 }
 .main-page .mainPage-container .box-right .user-info-box {
   width: 100%;
@@ -273,8 +273,8 @@ li {
 }
 .main-page .mainPage-container .box-right .reset-save-button .reset-button,
 .main-page .mainPage-container .box-right .reset-save-button .save-button {
-  width: 50px;
-  height: 45px;
+  width: 8%;
+  height: 8%;
   margin: 0 10px;
 }
 .main-page .mainPage-container .box-right .reset-save-button .reset-button img,

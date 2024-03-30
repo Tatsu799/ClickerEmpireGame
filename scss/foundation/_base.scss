@@ -57,7 +57,7 @@ li {
   justify-content: space-between;
   margin: 0 10% 0 10%;
 
-  .next,
+  .purchase,
   .go-back {
     width: 48%;
     margin: 3% 0 5% 0;
@@ -80,7 +80,7 @@ li {
       transition: all .3s ease;
     }
   }
-  .next {
+  .purchase {
     background-color: #0069d9;
     color: #fff;
     transition: all .3s ease;
@@ -202,9 +202,8 @@ li {
     }
     .box-right {
       width: 60%;
-      height: auto;
+      height: 100%;
       
-
       .user-info-box {
         width: 100%;
         height: auto;
@@ -313,79 +312,7 @@ li {
             }
           }
         }
-
-      }//
-
-      // .box-purchase {
-      //   // display: flex;
-      //   width: 97%;
-      //   height: 74%;
-      //   margin: 3% auto;
-      //   margin-right: 5%;
-      //   border: solid 3px rgba(255, 255, 255, 0.4);
-      //   background-color: rgb(53, 72, 110);
-      //   overflow: scroll;
-
-      //   .purchase-item {
-      //     display: flex;
-      //     width: 100%;
-      //     border: solid 2px rgba(255, 255, 255, 0.4);
-      //     .purchase-img {
-      //       width: 25%;
-      //       // height: 25%;
-      //       // border: solid 3px rgba(255, 255, 255, 0.4);
-      //       // border-right: none;
-      //       margin: 0.8% 0 0.8% 0.8%;
-      //       img {
-      //         width: 80%;
-      //         height: 100%;
-      //         object-fit: scale-down;
-      //       }
-      //     }
-      //     .purchase-info {
-      //       display: flex;
-      //       justify-content: space-between;
-      //       align-items: center;
-      //       width: 70%;
-      //       // height: 100%;
-      //       margin: 0.8% 0.8% 0.8% 0;
-      //       // border: solid 3px rgba(255, 255, 255, 0.4);
-      //       border-left: none;
-  
-      //       .items-info {
-      //         display: inline-block;
-      //         width: 55%;
-      //         color: #fff;
-      //         font-weight: 700;
-      //         .item-name {
-      //           display: inline-block;
-      //           width: 100%;
-      //           font-size: 1.25rem;
-      //           font-weight: 700;
-      //         }
-      //         .item-price {
-      //           display: inline-block;
-      //           width: 100%;
-      //         }
-      //       }
-  
-      //     }
-      //     .item-count {
-      //       color: #fff;
-      //       text-align: right;
-
-      //       .Possession {
-      //         font-size: 1.25rem;
-      //         font-weight: 700;
-      //       }
-      //       .get-money {
-      //         width: 100%;
-      //         color:#28a745;
-      //       }
-  
-      //     }
-      //   }
-      // }
+      }
 
       .reset-save-button {
         display: flex;
@@ -393,8 +320,10 @@ li {
         margin: 0 2% 0 0;
         .reset-button,
         .save-button {
-          width: 50px;
-          height: 45px;
+          // width: 50px;
+          // height: 45px;
+          width: 8%;
+          height: 8%;
           margin: 0 10px;
           img {
             width: 100%;
