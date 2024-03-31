@@ -588,7 +588,7 @@ th {
 @media screen and (max-width: 480px) {
   .main-page .mainPage-container .box-left .image-box {
     position: absolute;
-    top: 26%;
+    top: 27%;
     left: 2.5%;
     width: 95%;
     height: 18vh;
@@ -702,7 +702,7 @@ th {
 @media screen and (max-width: 480px) {
   .main-page .mainPage-container .box-right .box-container {
     position: absolute;
-    top: 58%;
+    top: 48%;
     left: 2.5%;
     width: 95%;
     height: 40%;
