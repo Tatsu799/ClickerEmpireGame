@@ -28,6 +28,9 @@
     .box-left {
       width: 40%;
       height: 100%;
+      @include mq(sp) {
+        width: 100%;
+      }
       .count-burgers {
         width: 90%;
         margin: 0 auto;
@@ -43,51 +46,70 @@
           width: 95%;
         }
         .burgers {
-          font-size: 1.25rem
+          font-size: 1.25rem;
         }
       }
       .image-box {
-        width: 100%;
-        height: auto;
-        .image-wrapper {
-          width: 90%;
-          height: 61vh;
-          margin: 6.5% auto;
-          border: solid 3px rgba(255, 255, 255, 0.4);
-          background-color: rgb(53, 72, 110);
+        position: relative;
+        width: 90%;
+        height: 61vh;
+        margin: 6.5% auto;
+        border: solid 3px rgba(255, 255, 255, 0.4);
+        background-color: rgb(53, 72, 110);
+        @include mq(sp) {
+          position: absolute;
+          top: 28%;
+          left: 2.5%;
+          width: 95%;
+          height: 18vh;
+        }
+
+        p {
+          position: absolute;
+          top: 11%;
+          left: 25%;
+          display: inline;
+          color: #fff;
+          font-weight: 700;
+          font-size: 2rem;
           @include mq(pc_max) {
-            height: 67.5vh;;
+            top: 25%;
+            left: 20%;
           }
           @include mq(tab) {
-            height: 63.5vh;;
+            left: 18%;
+            font-size: 1.75rem;
           }
           @include mq(sp) {
-            position: absolute;
-            top: 27%;
-            left: 2.5%;
-            width: 95%;
-            height: 20%;
+            font-size: 1rem;
+            top: 0;
+            left: 35%;
           }
-          p {
-            position: absolute;
-            top: 25%;
-            left: 5%;
-            display: inline;
-            color: #fff;
-            font-weight: 700;
-            font-size: 2rem;
-            @include mq(pc_max) {
-              top: 35%;
-            }
-            @include mq(sp) {
-              font-size: 1rem;
-              top: 0;
-            }
+        }
+        .image-wrapper {
+          position: relative;
+          top: 30%;
+          left: 20%;
+          width: 100%;
+          height: 90%;
+          @include mq(sp) {
+            position: static;
+            width: 50%;
+            margin: 12% 0 0 35%;
           }
+        
           img {
-            width: 100%;
-            height: 100%;
+            width: 60%;
+            height: 40%;
             object-fit: contain;
+            overflow: hidden;
+            @include mq(sp) {
+              height: 55%;
+            }
+          }
+          .click-burger {
+            transform: translate(0, 0);
+            animation: .2s 0s click-burger ;
           }
         }
       }
@@ -101,7 +123,7 @@
         @include mq(sp) {
           position: absolute;
           top: 15%;
-          left: 3%;
+          left: 5%;
           width: 98%;
         }
         .user-info {
@@ -134,10 +156,7 @@
         background-color: rgb(53, 72, 110);
         overflow: scroll;
         @include mq(pc_max) {
-          height: 85%;
-        }
-        @include mq(tab) {
-          height: 80%;
+          height: 77%;
         }
         @include mq(sp) {
           position: absolute;
@@ -253,4 +272,16 @@
 ::-webkit-scrollbar-thumb {
   background-color: #fff;
   border-radius: 5px;
+}
+
+@keyframes click-burger {
+  0% {
+    transform: translate(0px, 0px);
+  }
+  50% {
+    transform: translate(-5px, 5px);
+  }
+  100% {
+    transform: translate(0px, 0px);
+  }
 }

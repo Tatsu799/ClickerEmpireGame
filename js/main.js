@@ -16,7 +16,7 @@ function displayBlock(ele) {
 }
 
 class Item {
-  constructor(name, type, maxQuantity, price, imgUrl, unitPrice, perClick, perSec, itemPurchaseCount, totalPrice) {
+  constructor(name, type, maxQuantity, price, imgUrl, unitPrice, perClick, perSec, itemPurchaseCount) {
     this.name = name;
     this.type = type;
     this.maxQuantity = maxQuantity;
@@ -96,7 +96,7 @@ class Views {
 
     boxBurger.innerHTML = `
       <p id="burgers" class="burgers">${userData.burgers} Burgers</p>
-      <p class="burger-price">One click ¥${userData.perClickPrice}</p>
+      <p class="burger-price">One click $${userData.perClickPrice}</p>
     `;
 
     return boxBurger;
@@ -107,9 +107,9 @@ class Views {
     container.classList.add('image-box');
 
     container.innerHTML = `
-    <div id="burger-count" class="image-wrapper">
     <p>Click me!!!!</p>
-      <img id="burgers-image" src="./image/burger-img.png" alt="" />
+    <div id="burger-count" class="image-wrapper">
+      <img id="burgers-image" class="click-burger" src="./image/burger-img.png" alt="" />
     </div>  
   `;
 
@@ -129,7 +129,7 @@ class Views {
       <p class="name">${userData.name}</p>
       <p id="age" class="age">${userData.age} years old</p>
       <p id="days" class="days">${userData.days.toString()} days</p>
-      <p id="money" class="money">¥${userData.money}</p>
+      <p id="money" class="money">$${userData.money}</p>
     `;
 
     return boxRight;
@@ -149,7 +149,7 @@ class Views {
         <div class="purchase-info">
           <div class="items-info">
             <p class="item-name">${userData.items[i].name}</p>
-            <p class="item-price">¥${userData.items[i].price}</p>
+            <p class="item-price">$${userData.items[i].price}</p>
           </div>
           <div class="item-count">
             <p class="Possession">${userData.items[i].itemPurchaseCount}</p>
@@ -188,7 +188,7 @@ class Views {
           <div class="items-info">
             <p class="item-name">${userData.items[index].name}</p>
             <p class="max-purchases">Max purchases: ${userData.items[index].maxQuantity}</p>
-            <p class="item-price">¥ ${userData.items[index].price}</p>
+            <p class="item-price">$ ${userData.items[index].price}</p>
             <p class="get-per-money">Get ${userData.items[index].unitPrice}</p>
           </div>
         </div>
@@ -196,7 +196,7 @@ class Views {
       <div class="select-quantity" id="select-quantity">
         <p class="text">How many would you like to buy?</p>
         <input id="inputNum" class="input-quantity" type="number" placeholder="1"/>
-        <p id="totalPrice" class="total-price">total: ¥${userData.totalItemPrice}</p>
+        <p id="totalPrice" class="total-price">total: $${userData.totalItemPrice}</p>
       </div>
       <div class="back-next-buttons">
         <button id="go-back" class="go-back">Go Back</button>
@@ -320,23 +320,23 @@ class Controller {
 
   static initialUserData() {
     const Items = [
-      new Item('Flip machine', 'click', 500, 15000, './image/flip-machine-img.png', '¥25/click', 25, 0, 0),
-      new Item('ETF Stock', 'stock', '∞', 300000, './image/stoks-img.png', '¥0.1/sec', 0, 0.1, 0),
-      new Item('ETF Bonds', 'stock', '∞', 300000, './image/stoks-img.png', '¥0.7/sec', 0, 0.07, 0),
-      new Item('Lemonade Stand', 'other', 1000, 30000, './image/lemonade-img.png', '¥30/sec', 0, 30, 0),
-      new Item('Ice Cream Truck', 'other', 500, 100000, './image/ice-cream-img.png', '¥120/sec', 0, 120, 0),
-      new Item('House', 'other', 100, 20000000, './image/house-img.png', '¥32000/sec', 0, 32000, 0),
-      new Item('TownHouse', 'other', 100, 40000000, './image/town-house.png', '¥64000/sec', 0, 64000, 0),
-      new Item('Mansion', 'other', 20, 250000000, './image/mansion-img.png', '¥50000/sec', 0, 50000, 0),
-      new Item('Industrial Space', 'other', 10, 1000000000, './image/industrial-space-img.png', '¥2200000/sec', 0, 2200000, 0),
-      new Item('Hotel Skyscraper', 'other', 5, 10000000000, './image/hotel-skyscraper-img.png', '¥25000000/sec', 0, 25000000, 0),
+      new Item('Flip machine', 'click', 500, 15000, './image/flip-machine-img.png', '$25/click', 25, 0, 0),
+      new Item('ETF Stock', 'stock', '∞', 300000, './image/stoks-img.png', '$0.1/sec', 0, 0.1, 0),
+      new Item('ETF Bonds', 'stock', '∞', 300000, './image/stoks-img.png', '$0.7/sec', 0, 0.07, 0),
+      new Item('Lemonade Stand', 'other', 1000, 30000, './image/lemonade-img.png', '$30/sec', 0, 30, 0),
+      new Item('Ice Cream Truck', 'other', 500, 100000, './image/ice-cream-img.png', '$120/sec', 0, 120, 0),
+      new Item('House', 'other', 100, 20000000, './image/house-img.png', '$32000/sec', 0, 32000, 0),
+      new Item('TownHouse', 'other', 100, 40000000, './image/town-house.png', '$64000/sec', 0, 64000, 0),
+      new Item('Mansion', 'other', 20, 250000000, './image/mansion-img.png', '$500000/sec', 0, 500000, 0),
+      new Item('Industrial Space', 'other', 10, 1000000000, './image/industrial-space-img.png', '$2200000/sec', 0, 2200000, 0),
+      new Item('Hotel Skyscraper', 'other', 5, 10000000000, './image/hotel-skyscraper-img.png', '$25000000/sec', 0, 25000000, 0),
       new Item(
         'Bullet-Speed Sky Railway',
         'other',
         1,
         10000000000000,
         './image/bullet-speed-sky -railway-img.png',
-        '¥30000000000/sec',
+        '$30000000000/sec',
         0,
         30000000000,
         0
@@ -379,7 +379,7 @@ class Controller {
 
     age.innerHTML = `${userData.age} years old`;
     days.innerHTML = `${userData.days} days`;
-    money.innerHTML = `¥${userData.money}`;
+    money.innerHTML = `$${userData.money}`;
   }
 
   //Burgerのクリックデータを更新
@@ -462,7 +462,7 @@ class Controller {
       alert('You have not enough money to buy');
     } else {
       userData.money -= price;
-      userData.perSecPrice += userData.items[index].perSec;
+      userData.perSecPrice += userData.items[index].perSec * inputNum;
       Views.updateUserInfoPage(userData);
     }
   }
@@ -472,7 +472,7 @@ class Controller {
 
     if (inputNum.value > 0) {
       userData.totalItemPrice = userData.items[index].price * inputNum.value;
-      totalItemPrice.innerHTML = `total: ¥${userData.totalItemPrice}`;
+      totalItemPrice.innerHTML = `total: $${userData.totalItemPrice}`;
     } else {
       userData.totalItemPrice = userData.totalItemPrice;
       totalItemPrice.innerHTML = `total: ¥0`;
