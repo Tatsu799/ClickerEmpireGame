@@ -58,7 +58,7 @@
         background-color: rgb(53, 72, 110);
         @include mq(sp) {
           position: absolute;
-          top: 28%;
+          top: 26%;
           left: 2.5%;
           width: 95%;
           height: 18vh;
@@ -123,7 +123,7 @@
         @include mq(sp) {
           position: absolute;
           top: 15%;
-          left: 5%;
+          left: 4.5%;
           width: 98%;
         }
         .user-info {
@@ -160,7 +160,7 @@
         }
         @include mq(sp) {
           position: absolute;
-          top: 50.5%;
+          top: 58%;
           left: 2.5%;
           width: 95%;
           height: 40%;
